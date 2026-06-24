@@ -1,0 +1,2 @@
+# Core dependencies only (minimal)
+python-dateutil>=2.8.2

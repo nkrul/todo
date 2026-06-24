@@ -1,0 +1,4 @@
+# Mobile interface dependencies
+-r requirements-core.txt
+kivy>=2.2.1
+kivy-garden>=0.1.5

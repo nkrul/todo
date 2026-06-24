@@ -1,0 +1,3 @@
+# Web interface dependencies
+-r requirements-core.txt
+streamlit>=1.28.0
