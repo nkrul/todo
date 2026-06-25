@@ -158,7 +158,7 @@ def main():
         if today_tasks:
             for item in today_tasks:
                 if not item.completed or show_completed:
-                    display_task_item(item)
+                    display_task_item(item, key_prefix="today")
         else:
             st.info("No tasks for today!")
 
@@ -178,7 +178,7 @@ def main():
             tasks_to_show.sort(key=lambda x: (x.completed, x.due_date or date.today()))
 
             for item in tasks_to_show:
-                display_task_item(item)
+                display_task_item(item, key_prefix="all")
         else:
             st.info("No tasks to display")
 
@@ -204,7 +204,7 @@ def main():
                 if day_tasks:
                     for item in day_tasks:
                         if not item.completed or show_completed:
-                            display_task_item(item)
+                            display_task_item(item, key_prefix=f"date_{current_date.isoformat()}")
                 else:
                     st.caption("No tasks scheduled")
             current_date += timedelta(days=1)
@@ -239,7 +239,7 @@ def main():
             st.bar_chart(priorities)
 
 
-def display_task_item(item: TodoItem):
+def display_task_item(item: TodoItem, key_prefix: str = "task"):
     """Display a single task item with controls."""
     with st.container():
         col1, col2, col3, col4 = st.columns([0.5, 3, 1, 1])
@@ -249,7 +249,7 @@ def display_task_item(item: TodoItem):
             is_completed = st.checkbox(
                 "completed",
                 value=item.completed,
-                key=f"check_{item.id}",
+                key=f"{key_prefix}_check_{item.id}",
                 label_visibility="collapsed",
             )
             if is_completed != item.completed:
@@ -275,21 +275,21 @@ def display_task_item(item: TodoItem):
 
         # Edit button
         with col3:
-            if st.button("✏️", key=f"edit_{item.id}"):
-                st.session_state[f"edit_{item.id}"] = True
+            if st.button("✏️", key=f"{key_prefix}_edit_{item.id}"):
+                st.session_state[f"{key_prefix}_edit_{item.id}"] = True
 
         # Delete button
         with col4:
-            if st.button("🗑️", key=f"delete_{item.id}"):
+            if st.button("🗑️", key=f"{key_prefix}_delete_{item.id}"):
                 st.session_state.todo_list.remove_item(item.id)
                 save_to_storage()
                 st.rerun()
 
         # Edit mode
-        if st.session_state.get(f"edit_{item.id}", False):
+        if st.session_state.get(f"{key_prefix}_edit_{item.id}", False):
             with st.expander("Edit Task", expanded=True):
                 new_title = st.text_input(
-                    "Title", value=item.title, key=f"edit_title_{item.id}"
+                    "Title", value=item.title, key=f"{key_prefix}_edit_title_{item.id}"
                 )
                 new_category = st.selectbox(
                     "Category",
@@ -311,29 +311,29 @@ def display_task_item(item: TodoItem):
                         "Education",
                         "Home",
                     ].index(item.category),
-                    key=f"edit_category_{item.id}",
+                    key=f"{key_prefix}_edit_category_{item.id}",
                 )
                 new_due_date = st.date_input(
                     "Due Date",
                     value=item.due_date or date.today(),
-                    key=f"edit_date_{item.id}",
+                    key=f"{key_prefix}_edit_date_{item.id}",
                 )
                 new_priority = st.select_slider(
                     "Priority",
                     options=["low", "medium", "high"],
                     value=item.priority,
-                    key=f"edit_priority_{item.id}",
+                    key=f"{key_prefix}_edit_priority_{item.id}",
                 )
                 new_description = st.text_area(
                     "Description",
                     value=item.description,
-                    key=f"edit_desc_{item.id}",
+                    key=f"{key_prefix}_edit_desc_{item.id}",
                     height=80,
                 )
 
                 col1, col2 = st.columns(2)
                 with col1:
-                    if st.button("Save", key=f"save_{item.id}"):
+                    if st.button("Save", key=f"{key_prefix}_save_{item.id}"):
                         item.update(
                             title=new_title,
                             category=new_category,
@@ -345,8 +345,8 @@ def display_task_item(item: TodoItem):
                         st.session_state[f"edit_{item.id}"] = False
                         st.rerun()
                 with col2:
-                    if st.button("Cancel", key=f"cancel_{item.id}"):
-                        st.session_state[f"edit_{item.id}"] = False
+                    if st.button("Cancel", key=f"{key_prefix}_cancel_{item.id}"):
+                        st.session_state[f"{key_prefix}_edit_{item.id}"] = False
                         st.rerun()
 
         st.divider()
