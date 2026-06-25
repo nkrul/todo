@@ -15,7 +15,7 @@ ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install sudo wget curl vim git && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install sudo wget curl vim git podman podman-docker && \
     rm -rf /var/lib/apt/lists/*
 
 # Install libnss-mdns

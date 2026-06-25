@@ -38,7 +38,7 @@ class TodoApp(App):
 
         # Title
         title_label = Label(
-            text="📝 Todo App",
+            text="📝 Todo",
             size_hint_y=0.1,
             font_size="24sp",
             bold=True,
