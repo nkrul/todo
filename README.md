@@ -34,32 +34,12 @@ A modern, multi-platform todo application with natural language parsing and temp
 ## Project Structure
 
 ```
-todo/
-├── todo_core/               # Core domain logic (reusable)
-│   ├── __init__.py
-│   ├── models.py           # TodoItem and TodoList models
-│   ├── parser.py           # Natural language parser
-│   └── storage.py          # Storage management
-├── todo_web/               # Web interface (Streamlit)
-│   ├── __init__.py
-│   └── app.py              # Main Streamlit app
-├── todo_mobile/            # Mobile interface (Kivy)
-│   ├── __init__.py
-│   └── app.py              # Main Kivy app
-├── tests/                  # Comprehensive test suite
-│   ├── test_models.py
-│   ├── test_parser.py
-│   ├── test_storage.py
-│   ├── __init__.py
-│   └── conftest.py
-├── setup.py               # Package setup
-├── pyproject.toml         # Project metadata
-├── requirements.txt       # All dependencies
-├── requirements-core.txt  # Core dependencies only
-├── requirements-web.txt   # Web interface dependencies
-├── requirements-mobile.txt # Mobile interface dependencies
-├── requirements-dev.txt   # Development dependencies
-└── .github/workflows/     # CI/CD pipelines
+.
+├── todo_core/   # Core domain logic (models, parser, storage)
+├── todo_web/    # Web interface (Streamlit)
+├── todo_mobile/ # Mobile interface (Kivy)
+├── todo_cli/    # Command-line interface entrypoint
+└── tests/       # Unit and integration tests
 ```
 
 ## Installation
