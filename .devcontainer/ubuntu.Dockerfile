@@ -69,7 +69,7 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 RUN /home/${USERNAME}/.local/bin/uv python install 3.13 --default
 
 # use the MANUALLY created .venv directory 
-RUN printf "if [ -f /workspaces/${NAME}/.venv/bin/activate ]; then\n\tsource /workspaces/${USERNAME}/.venv/bin/activate\nfi\n" >> /home/${USERNAME}/.profile
+RUN printf "if [ -f /workspaces/${NAME}/.venv/bin/activate ]; then\n\tsource /workspaces/${NAME}/.venv/bin/activate\nfi\n" >> /home/${USERNAME}/.bashrc
 
 
 # https://github.com/nvm-sh/nvm
