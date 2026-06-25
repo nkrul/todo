@@ -36,7 +36,7 @@ class NaturalLanguageParser:
     ]
 
     PRIORITY_KEYWORDS = {
-        r"\b(urgent|asap|critical|immediately|priority|!!)\b": "high",
+        r"\b(urgent|asap|critical|immediately|priority)\b|!{2,}": "high",
         r"\b(important|soon)\b": "medium",
         r"\b(later|whenever)\b": "low",
     }
