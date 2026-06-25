@@ -1,9 +1,9 @@
 """Domain models for todo items and lists."""
 
-from dataclasses import dataclass, field, asdict
-from datetime import datetime, date
-from typing import List, Optional
 import uuid
+from dataclasses import asdict, dataclass, field
+from datetime import date, datetime
+from typing import List, Optional
 
 
 @dataclass

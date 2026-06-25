@@ -1,9 +1,9 @@
 """Natural language parsing for todo items."""
 
 import re
-from datetime import datetime, date, timedelta
-from typing import Dict, List, Optional, Tuple
-import json
+from datetime import date, datetime, timedelta
+from typing import Callable, Dict, List, Optional, Union
+
 from .models import TodoItem
 
 
@@ -11,7 +11,7 @@ class NaturalLanguageParser:
     """Parse natural language input to extract todo items with due dates."""
 
     # Relative date patterns
-    RELATIVE_PATTERNS = {
+    RELATIVE_PATTERNS: Dict[str, Union[int, Callable[[], int]]] = {
         r"\btoday\b": 0,
         r"\btomorrow\b": 1,
         r"\byesterday\b": -1,
@@ -59,21 +59,16 @@ class NaturalLanguageParser:
         # Check relative patterns
         for pattern, offset in NaturalLanguageParser.RELATIVE_PATTERNS.items():
             if re.search(pattern, text_lower, re.IGNORECASE):
-                if callable(offset):
-                    offset = offset()
-                return date.today() + timedelta(days=offset)
+                offset_days: int = offset() if callable(offset) else offset
+                return date.today() + timedelta(days=offset_days)
 
         # Check for absolute date patterns (MM/DD or MM-DD or MM.DD)
-        date_matches = re.findall(
-            r"\b(\d{1,2})[/\-\.](\d{1,2})(?:[/\-\.](\d{2,4}))?\b", text
-        )
+        date_matches = re.findall(r"\b(\d{1,2})[/\-\.](\d{1,2})(?:[/\-\.](\d{2,4}))?\b", text)
         if date_matches:
             month, day, year = date_matches[0]
             try:
                 if year:
-                    parsed_date = datetime.strptime(
-                        f"{month}/{day}/{year}", "%m/%d/%Y"
-                    ).date()
+                    parsed_date = datetime.strptime(f"{month}/{day}/{year}", "%m/%d/%Y").date()
                 else:
                     # Assume current or next year
                     try:
@@ -143,9 +138,7 @@ class NaturalLanguageParser:
         category = NaturalLanguageParser._extract_category(text)
         priority = NaturalLanguageParser._extract_priority(text)
 
-        return TodoItem(
-            title=title, due_date=due_date, category=category, priority=priority
-        )
+        return TodoItem(title=title, due_date=due_date, category=category, priority=priority)
 
     @staticmethod
     def parse_multiple(text: str) -> List[TodoItem]:

@@ -98,8 +98,7 @@ class TodoCLI:
         due = item.due_date.isoformat() if item.due_date else "No due date"
         status = "✓" if item.completed else " "
         return (
-            f"[{status}] {item.id} | {item.title} | {item.category} | "
-            f"{item.priority} | {due}"
+            f"[{status}] {item.id} | {item.title} | {item.category} | " f"{item.priority} | {due}"
         )
 
 
@@ -116,9 +115,7 @@ def _build_parser() -> argparse.ArgumentParser:
 
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    add_parser = subparsers.add_parser(
-        "add", help="Add a new todo item using natural language."
-    )
+    add_parser = subparsers.add_parser("add", help="Add a new todo item using natural language.")
     add_parser.add_argument("text", nargs="+", help="Task text to parse and add.")
 
     list_parser = subparsers.add_parser("list", help="List todo items.")
@@ -140,8 +137,7 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     complete_parser.add_argument("item_ids", nargs="+", help="IDs of items to complete.")
 
-    remove_parser = subparsers.add_parser(
-        "remove", help="Remove todo items by ID.")
+    remove_parser = subparsers.add_parser("remove", help="Remove todo items by ID.")
     remove_parser.add_argument("item_ids", nargs="+", help="IDs of items to remove.")
 
     subparsers.add_parser("clear", help="Delete the default todo list.")

@@ -1,7 +1,7 @@
 """Tests for natural language parser."""
 
-import pytest
 from datetime import date, timedelta
+
 from todo_core.parser import NaturalLanguageParser
 
 
@@ -119,9 +119,7 @@ class TestNaturalLanguageParser:
 
     def test_clean_title(self):
         """Test cleaning title."""
-        title = NaturalLanguageParser._clean_title(
-            "Buy milk tomorrow for Work !!! urgent"
-        )
+        title = NaturalLanguageParser._clean_title("Buy milk tomorrow for Work !!! urgent")
         assert "tomorrow" not in title.lower()
         assert "urgent" not in title.lower()
         assert "Buy milk" in title

@@ -1,7 +1,7 @@
 """Tests for todo_core models."""
 
-import pytest
 from datetime import date, timedelta
+
 from todo_core.models import TodoItem, TodoList
 
 
@@ -39,9 +39,7 @@ class TestTodoItem:
 
     def test_to_dict(self):
         """Test converting todo item to dict."""
-        item = TodoItem(
-            title="Test", category="Work", due_date=date.today(), priority="high"
-        )
+        item = TodoItem(title="Test", category="Work", due_date=date.today(), priority="high")
         data = item.to_dict()
         assert data["title"] == "Test"
         assert data["category"] == "Work"

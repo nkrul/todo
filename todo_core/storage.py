@@ -4,7 +4,8 @@ import json
 import os
 from pathlib import Path
 from typing import Optional
-from .models import TodoList, TodoItem
+
+from .models import TodoList
 
 
 class StorageManager:
@@ -53,6 +54,4 @@ class StorageManager:
         """List all available todo lists."""
         if not self.storage_path.exists():
             return []
-        return [
-            f.stem for f in self.storage_path.glob("*.json") if f.is_file()
-        ]
+        return [f.stem for f in self.storage_path.glob("*.json") if f.is_file()]

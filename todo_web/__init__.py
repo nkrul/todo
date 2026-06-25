@@ -1,14 +1,15 @@
 """Web interface for the todo app using Streamlit."""
 
-import streamlit as st
-from datetime import date, datetime, timedelta
-from pathlib import Path
 import sys
+from datetime import date, timedelta
+from pathlib import Path
+
+import streamlit as st
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from todo_core import TodoItem, TodoList, NaturalLanguageParser, StorageManager
+from todo_core import NaturalLanguageParser, StorageManager, TodoItem
 
 
 def init_session_state():
@@ -52,7 +53,6 @@ def main():
         st.header("📊 Statistics")
         pending = st.session_state.todo_list.get_pending_items()
         overdue = st.session_state.todo_list.get_overdue_items()
-        today_items = st.session_state.todo_list.get_today_items()
 
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -113,9 +113,7 @@ def main():
         with col1:
             title = st.text_input("Task Title")
         with col2:
-            due_date = st.date_input(
-                "Due Date", value=date.today(), label_visibility="collapsed"
-            )
+            due_date = st.date_input("Due Date", value=date.today(), label_visibility="collapsed")
         with col3:
             category = st.selectbox(
                 "Category",
@@ -196,9 +194,7 @@ def main():
         # Display tasks by date
         current_date = start_date
         while current_date <= end_date:
-            day_tasks = [
-                t for t in st.session_state.todo_list.items if t.due_date == current_date
-            ]
+            day_tasks = [t for t in st.session_state.todo_list.items if t.due_date == current_date]
             if day_tasks or current_date == date.today():
                 st.subheader(f"📅 {current_date.strftime('%A, %B %d, %Y')}")
                 if day_tasks:
@@ -263,9 +259,7 @@ def display_task_item(item: TodoItem, key_prefix: str = "task"):
         with col2:
             text_decoration = "line-through" if item.completed else "none"
             due_date_str = f" • {item.due_date}" if item.due_date else ""
-            priority_emoji = {"low": "🟢", "medium": "🟡", "high": "🔴"}.get(
-                item.priority, "⚪"
-            )
+            priority_emoji = {"low": "🟢", "medium": "🟡", "high": "🔴"}.get(item.priority, "⚪")
             st.markdown(
                 f"<span style='text-decoration:{text_decoration}'>"
                 f"{item.title}</span><br/>"
@@ -356,4 +350,3 @@ def display_task_item(item: TodoItem, key_prefix: str = "task"):
 
 if __name__ == "__main__":
     main()
-

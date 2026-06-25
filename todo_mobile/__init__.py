@@ -1,24 +1,24 @@
 """Mobile app for todo using Kivy for iOS/Android."""
 
-from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
-from kivy.uix.popup import Popup
-from kivy.uix.spinner import Spinner
-from kivy.core.window import Window
-from kivy.garden.datepicker import DatePicker
-from datetime import date
 import sys
+from datetime import date
 from pathlib import Path
+
+from kivy.app import App
+from kivy.core.window import Window
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.label import Label
+from kivy.uix.popup import Popup
+from kivy.uix.scrollview import ScrollView
+from kivy.uix.spinner import Spinner
+from kivy.uix.textinput import TextInput
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from todo_core import TodoItem, TodoList, NaturalLanguageParser, StorageManager
+from todo_core import NaturalLanguageParser, StorageManager, TodoItem
 
 
 class TodoApp(App):
@@ -219,4 +219,3 @@ class TodoApp(App):
 if __name__ == "__main__":
     app = TodoApp()
     app.run()
-
