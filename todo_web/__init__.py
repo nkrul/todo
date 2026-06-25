@@ -273,10 +273,12 @@ def display_task_item(item: TodoItem, key_prefix: str = "task"):
                 unsafe_allow_html=True,
             )
 
+        edit_flag_key = f"{key_prefix}_edit_mode_{item.id}"
+
         # Edit button
         with col3:
             if st.button("✏️", key=f"{key_prefix}_edit_{item.id}"):
-                st.session_state[f"{key_prefix}_edit_{item.id}"] = True
+                st.session_state[edit_flag_key] = True
 
         # Delete button
         with col4:
@@ -286,7 +288,7 @@ def display_task_item(item: TodoItem, key_prefix: str = "task"):
                 st.rerun()
 
         # Edit mode
-        if st.session_state.get(f"{key_prefix}_edit_{item.id}", False):
+        if st.session_state.get(edit_flag_key, False):
             with st.expander("Edit Task", expanded=True):
                 new_title = st.text_input(
                     "Title", value=item.title, key=f"{key_prefix}_edit_title_{item.id}"
@@ -342,11 +344,11 @@ def display_task_item(item: TodoItem, key_prefix: str = "task"):
                             description=new_description,
                         )
                         save_to_storage()
-                        st.session_state[f"edit_{item.id}"] = False
+                        st.session_state[edit_flag_key] = False
                         st.rerun()
                 with col2:
                     if st.button("Cancel", key=f"{key_prefix}_cancel_{item.id}"):
-                        st.session_state[f"{key_prefix}_edit_{item.id}"] = False
+                        st.session_state[edit_flag_key] = False
                         st.rerun()
 
         st.divider()
