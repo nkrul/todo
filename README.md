@@ -80,19 +80,19 @@ todo/
 
    For all features:
    ```bash
-   pip install -r requirements.txt
+   python -m pip install -r requirements.txt
    ```
 
    Or install individually:
    ```bash
    # Core only
-   pip install -r requirements-core.txt
+   python -m pip install -r requirements-core.txt
    
    # Web interface
-   pip install -r requirements-web.txt
+   python -m pip install -r requirements-web.txt
    
    # Mobile interface
-   pip install -r requirements-mobile.txt
+   python -m pip install -r requirements-mobile.txt
    
    # Development
    pip install -r requirements-dev.txt

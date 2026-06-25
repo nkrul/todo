@@ -10,7 +10,7 @@ git clone https://github.com/yourusername/todo-app.git
 cd todo-app
 
 # 2. Install dependencies
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 
 # 3. Run the web app
 streamlit run todo_web/app.py
@@ -104,12 +104,12 @@ todo/
 
 ### "Module not found" errors
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ### Streamlit not starting
 ```bash
-pip install streamlit --upgrade
+python -m pip install streamlit --upgrade
 ```
 
 ### Tests failing
