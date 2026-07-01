@@ -5,10 +5,11 @@ python-dateutil>=2.8.2
 streamlit>=1.28.0
 
 # Mobile interface (Kivy)
-kivy>=2.3.1
+kivy>=2.2.1
 kivy-garden>=0.1.5
 
 buildozer==1.6.0
+Cython==0.29.37
 
 # Development and testing
 pytest>=7.0.0

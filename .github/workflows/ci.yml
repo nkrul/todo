@@ -1,4 +1,4 @@
-name: CI
+name: CI App Builds
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
     types: [ closed ]
 
 jobs:
-  release:
-    name: Build
+  build-android:
+    name: Build Android APK
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -21,7 +21,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -52,6 +52,9 @@ jobs:
         run: |
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           python3 -m pip install buildozer
+          echo "Cleaning buildozer cache and previous build artifacts..."
+          rm -rf ~/.buildozer/ .buildozer/ .android/
+          echo "Building Android APK..."
           yes | buildozer android debug
 
       - name: Upload Android APK artifact
@@ -59,3 +62,38 @@ jobs:
         with:
           name: android-apk
           path: bin/*.apk
+
+  build-ios:
+    name: Build iOS App
+    runs-on: macos-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install macOS Dependencies
+      run: |
+        brew install autoconf automake libtool pkg-config gmp ccache
+        # Required for older Python recipes if targeting Android
+        brew install openssl@3 
+
+    - name: Install Buildozer and Cython
+      run: |
+        pip install --upgrade pip
+        pip install cython buildozer
+
+    - name: Build with Buildozer
+      run: |
+        # Change 'ios' to 'android' or 'osx' depending on your target target platform
+        buildozer ios debug
+        
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: packaged-app
+        path: bin/

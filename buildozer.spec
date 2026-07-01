@@ -12,7 +12,7 @@ package.domain = com.kncept.todo
 version = 0.1.0
 
 # (list) Application requirements
-requirements = python3,python-dateutil,kivy>=2.3.1,kivy-garden>=0.1.5
+requirements = python3==3.12.13,hostpython3==3.12.13,python-dateutil,kivy>=2.2.1,kivy-garden>=0.1.5,Cython==0.29.37
 
 # (list) Source file patterns to include
 source.dir = .
@@ -40,8 +40,10 @@ android.release_artifact = apk
 android.sdk_path = .android/sdk
 android.ndk_path = .android/ndk
 
+
 # Logging
 android.logcat_filters = *:S python:D
 
 # Use the SDL2 bootstrap
 p4a.bootstrap = sdl2
+p4a.env_vars = CFLAGS="$CFLAGS -I$(ANDROID_NDK_HOME)/sysroot/usr/include -I$(ANDROID_NDK_HOME)/sysroot/usr/include/GLES"

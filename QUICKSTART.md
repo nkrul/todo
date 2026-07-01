@@ -26,7 +26,10 @@ Visit `http://localhost:8501` in your browser!
 
 ## Mobile Builds
 ```bash
-# 5. Run buildozer
+# 5. Run buildozer (with pre clean)
+export CFLAGS="-Wno-error=implicit-function-declaration"
+export CXXFLAGS="-Wno-error=implicit-function-declaration"
+rm -fr ~/.buildozer .buildozer .android
 yes | buildozer android debug
 ```
 
