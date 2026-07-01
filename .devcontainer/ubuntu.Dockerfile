@@ -6,32 +6,64 @@ ARG NAME=todo
 
 # consider lscr.io/linuxserver/code-server:latest
 
+# Locale stuff (use package, or can just inject)
+# Use Locales
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y locales && \
-    locale-gen en_US.UTF-8
-
+    locale-gen en_US.UTF-8 && \
+    rm -rf /var/lib/apt/lists/*
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install sudo wget curl vim git podman podman-docker && \
-    rm -rf /var/lib/apt/lists/*
-
-# Install libnss-mdns
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install libnss-mdns && \
-    rm -rf /var/lib/apt/lists/*
-# Update nsswitch.conf to route .local queries through mdns
-RUN sed -i 's/hosts:.*/hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4/' /etc/nsswitch.conf
-
-
 # Locale injector
 # RUN \
     # echo LANGUAGE=en_US.UTF-8 >> /etc/environment && \
     # echo LC_ALL=en_US.UTF-8 >> /etc/environment && \
     # echo LANG=en_US.UTF-8 >> /etc/environment && \
     # echo LC_CTYPE=en_US.UTF-8 >> /etc/environment
+
+
+RUN apt-get update && \
+    apt-get -y install sudo wget curl vim git unzip && \
+    rm -rf /var/lib/apt/lists/*
+
+# # podman (instead of docker)
+# RUN apt-get update && \
+#     apt-get -y install podman podman-docker && \
+#     rm -rf /var/lib/apt/lists/*
+
+# Install libnss-mdns
+RUN apt-get update && \
+    apt-get -y install libnss-mdns && \
+    rm -rf /var/lib/apt/lists/*
+# Update nsswitch.conf to route .local queries through mdns
+RUN sed -i 's/hosts:.*/hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4/' /etc/nsswitch.conf
+
+
+# Android and Buildozer requirements
+# Step 1: Install Java Development Kit (JDK) and any 'buildozer' required packages (like zlib)
+RUN apt-get update && \
+    apt-get -y install \
+    openjdk-17-jdk zlib1g-dev build-essential autoconf \
+    automake libtool libltdl-dev libmpdec-dev libssl-dev libffi-dev && \
+    rm -rf /var/lib/apt/lists/*
+# Step 2: Set environment variables for Android SDK
+ENV ANDROID_SDK_ROOT=/opt/android-sdk
+ENV PATH=${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/platform-tools
+# Step 4: Download and extract Android Command Line Tools
+# Always verify the latest version identifier on the Android Developer website
+ARG CMD_LINE_FILE=commandlinetools-linux-14742923_latest.zip
+RUN mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools && \
+    wget -q https://dl.google.com/android/repository/${CMD_LINE_FILE} -O /tmp/cmdline-tools.zip && \
+    unzip -q /tmp/cmdline-tools.zip -d /tmp && \
+    mv /tmp/cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest && \
+    rm /tmp/cmdline-tools.zip
+# # Step 5: Automatically accept SDK licenses
+RUN yes | sdkmanager --licenses
+# # Step 6: Install required SDK components (Adjust versions as needed)
+RUN sdkmanager "platform-tools" \
+               "platforms;android-33" \
+               "build-tools;33.0.0"
 
 ARG GO_SRC_FILE=go1.24.5.linux-amd64.tar.gz
 RUN \

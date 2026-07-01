@@ -35,7 +35,7 @@ jobs:
         run: |
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           python3 -m pip install buildozer
-          buildozer android debug
+          yes | buildozer android debug
 
       - name: Upload Android APK artifact
         uses: actions/upload-artifact@v4

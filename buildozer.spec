@@ -15,6 +15,7 @@ version = 0.1.0
 requirements = python3,python-dateutil,kivy>=2.2.1,kivy-garden>=0.1.5
 
 # (list) Source file patterns to include
+source.dir = .
 source.include_exts = py,kv,png,jpg,atlas
 source.include_patterns = main.py,todo_mobile/**,README.md,LICENSE,pyproject.toml,setup.py,requirements-mobile.txt
 source.exclude_patterns = .git/*,tests/*,.venv/*,.github/*
@@ -32,15 +33,15 @@ icon.filename =
 android.api = 33
 android.minapi = 21
 android.ndk = 25b
-android.arch = armeabi-v7a
+android.archs = armeabi-v7a
 android.release_artifact = apk
 
-# SDK/NDK paths set via CI environment
-android.sdk_path = /home/runner/Android/Sdk
-android.ndk_path = /home/runner/Android/Sdk/ndk/25.2.9519653
+# This is where these are downloaded to
+android.sdk_path = .android/sdk
+android.ndk_path = .android/ndk
 
 # Logging
 android.logcat_filters = *:S python:D
 
 # Use the SDL2 bootstrap
-android.bootstrap = sdl2
+p4a.bootstrap = sdl2
