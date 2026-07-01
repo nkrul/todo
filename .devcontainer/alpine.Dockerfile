@@ -62,7 +62,7 @@ RUN go install github.com/go-delve/delve/cmd/dlv@v1.25.1
 
 # Install claude over LocalAI 
 # This is a _really_ bad way to handle keys
-# ENV ANTHROPIC_BASE_URL=http://diana.local:8080
+# ENV ANTHROPIC_BASE_URL=http://192.168.0.19:8080
 # ENV ANTHROPIC_API_KEY=todo55API
 # ANTHROPIC_AUTH_TOKEN=todo55API
 # ANTHROPIC_API_KEY=

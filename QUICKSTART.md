@@ -9,14 +9,26 @@ Get up and running with the Natural Language Todo App in minutes!
 git clone https://github.com/yourusername/todo-app.git
 cd todo-app
 
-# 2. Install dependencies
+# 2. create new venv
+rm -fr .venv && uv venv --seed
+
+# 3. restart docker termainal (will auto source), or manually source virtual env
+source .venv/bin/activate
+
+# 4. Install dependencies
 python -m pip install -r requirements.txt
 
-# 3. Run the web app
+# 5. Run the web app
 streamlit run todo_web/app.py
 ```
 
 Visit `http://localhost:8501` in your browser!
+
+## Mobile Builds
+```bash
+# 5. Run buildozer
+yes | buildozer android debug
+```
 
 ## Use Cases
 
@@ -31,7 +43,7 @@ Click "Parse & Add"
 - "today" → today
 - "tomorrow" → tomorrow
 - "next friday" → next Friday
-- "12/25" → December 25th
+- "25/12" → December 25th
 - "next week" → one week from today
 
 ### Indicate priority

@@ -12,7 +12,7 @@ package.domain = com.kncept.todo
 version = 0.1.0
 
 # (list) Application requirements
-requirements = python3,python-dateutil,kivy>=2.2.1,kivy-garden>=0.1.5
+requirements = python3,python-dateutil,kivy>=2.3.1,kivy-garden>=0.1.5
 
 # (list) Source file patterns to include
 source.dir = .

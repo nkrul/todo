@@ -42,11 +42,25 @@ RUN sed -i 's/hosts:.*/hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4/' 
 
 # Android and Buildozer requirements
 # Step 1: Install Java Development Kit (JDK) and any 'buildozer' required packages (like zlib)
+# libgl-dev mesa-common-dev libgl1-mesa-dev
 RUN apt-get update && \
     apt-get -y install \
-    openjdk-17-jdk zlib1g-dev build-essential autoconf \
-    automake libtool libltdl-dev libmpdec-dev libssl-dev libffi-dev && \
+    openjdk-17-jdk  \
+    build-essential autoconf automake libtool \
+    zlib1g-dev libltdl-dev libmpdec-dev libssl-dev libffi-dev \
+    && \
     rm -rf /var/lib/apt/lists/*
+# GL/gl.h and SDL2 dependencies for Kivy
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-dev \
+    libgles2-mesa-dev \
+    mesa-common-dev \
+    libglvnd-dev \
+    libsdl2-dev \
+    libsdl2-image-dev \
+    libsdl2-mixer-dev \
+    libsdl2-ttf-dev \
+    pkg-config
 # Step 2: Set environment variables for Android SDK
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
 ENV PATH=${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/platform-tools
@@ -60,10 +74,11 @@ RUN mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools && \
     rm /tmp/cmdline-tools.zip
 # # Step 5: Automatically accept SDK licenses
 RUN yes | sdkmanager --licenses
-# # Step 6: Install required SDK components (Adjust versions as needed)
-RUN sdkmanager "platform-tools" \
-               "platforms;android-33" \
-               "build-tools;33.0.0"
+# Step 6: Install required SDK components (Adjust versions as needed)
+# Except that sdkmanager is handled by the buildozer tool, so we don't need to do this manually.
+# RUN sdkmanager "platform-tools" \
+#                "platforms;android-33" \
+#                "build-tools;33.0.0"
 
 ARG GO_SRC_FILE=go1.24.5.linux-amd64.tar.gz
 RUN \
